@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>HeadFirstJspServletChap05</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <servlet>
+  	<servlet-name>LoginServlet</servlet-name>
+  	<servlet-class>priv.linjiayun.notetakingsystem.web.LoginServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>LoginServlet</servlet-name>
+  	<url-pattern>/login</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>SearchUserServlet</servlet-name>
+  	<servlet-class>priv.linjiayun.notetakingsystem.web.SearchUserServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>SearchUserServlet</servlet-name>
+  	<url-pattern>/searchUser</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>SearchNoteServlet</servlet-name>
+  	<servlet-class>priv.linjiayun.notetakingsystem.web.SearchNoteServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>SearchNoteServlet</servlet-name>
+  	<url-pattern>/searchNote</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>SeeAllUserServlet</servlet-name>
+  	<servlet-class>priv.linjiayun.notetakingsystem.web.SeeAllUserServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>SeeAllUserServlet</servlet-name>
+  	<url-pattern>/userAdmin</url-pattern>
+  </servlet-mapping>
+    <servlet>
+  	<servlet-name>VistorServlet</servlet-name>
+  	<servlet-class>priv.linjiayun.notetakingsystem.web.VistorServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>VistorServlet</servlet-name>
+  	<url-pattern>/vistor</url-pattern>
+  </servlet-mapping>
+<filter>
+  <filter-name>LonginFilter</filter-name>
+  <filter-class>priv.linjiayun.notetakingsystem.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  <filter-name>LonginFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+
+ 
+</web-app>
