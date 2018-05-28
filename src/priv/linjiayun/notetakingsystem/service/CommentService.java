@@ -13,6 +13,7 @@ import priv.linjiayun.notetakingsystem.dao.CommentDao;
 import priv.linjiayun.notetakingsystem.dao.UserDao;
 import priv.linjiayun.notetakingsystem.entity.Comment;
 import priv.linjiayun.notetakingsystem.entity.User;
+import priv.linjiayun.notetakingsystem.util.StringUtil;
 
 
 public class CommentService {
@@ -60,11 +61,16 @@ public class CommentService {
 				users.add(user);				
 			}
 			
+			if(comments.isEmpty()) {
+				req.setAttribute("comments", "暂时还没有评论，快抢沙发...");
+				req.getRequestDispatcher("main.jsp").forward(req, resp);
+			}else {
+				req.setAttribute("comments", comments);
+				req.setAttribute("users", users);
+				req.getRequestDispatcher("main.jsp").forward(req, resp);
+//				resp.sendRedirect("main.jsp");
+			}
 			
-			req.setAttribute("comments", comments);
-			req.setAttribute("users", users);
-			req.getRequestDispatcher("main.jsp").forward(req, resp);
-//			resp.sendRedirect("main.jsp");
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -86,12 +92,19 @@ public class CommentService {
 	 */
 	public void addComment(HttpServletRequest req, HttpServletResponse resp, int noteid, int userid, String body) {
 		try {
+			if(StringUtil.isEmpty(body)) {
+				req.getRequestDispatcher("main.jsp").forward(req, resp);
+				req.getSession().setAttribute("currentUser", userDao.findUserByid(userid));
+				
+				return;
+			}
 			Date date = new Date();  
 
 		       SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//24小时制  
 
 		       String create_time = sdformat.format(date);
-		    Comment comment=new Comment(userid, body, create_time, noteid);
+		    String body2=StringUtil.htmlReplace(body);
+		    Comment comment=new Comment(userid, body2, create_time, noteid);
 		   if( commentDao.addComment(comment)) {
 			   req.getRequestDispatcher("main.jsp").forward(req, resp);
 			   req.getSession().setAttribute("currentUser", userDao.findUserByid(userid));

@@ -383,19 +383,23 @@ z-index:999;
 		 		<%--  <dir> ${note_body }</dir> --%>
 		    	<textarea rows="5" cols="50"style="width:100%;height:100%;resize:none;"readonly="readonly"> ${onclicknote.body }</textarea> 
 		   </div>
-		   <div id="reply" style="width:95%;height:33%;background:#eee;overflow:scroll;display:inline-block;position:absolute;bottom:0px;display:none;">
+		   <c:if test="${currentUser!='欢迎参观' }">
+		    <div id="reply" 
+		        <c:if test="${!empty(comments) }">style="width:95%;height:33%;background:#eee;overflow:scroll;display:inline-block;position:absolute;bottom:0px;display:block;"</c:if> 
+		        <c:if test="${empty(comments) }">style="width:95%;height:33%;background:#eee;overflow:scroll;display:inline-block;position:absolute;bottom:0px;display:none;"</c:if>>
 		       <div id="comment_content">
-		       <a href="seeCommets?noteid=${onclicknote.id}" style="color: blue">查看看客评论</a>
-		      
+		      <c:if test="${comments=='暂时还没有评论，快抢沙发...' }">暂时还没有评论，快抢沙发...</c:if>
+		      <c:if test="${comments!='暂时还没有评论，快抢沙发...' }">
 		       <c:forEach  items="${comments}" var="comment" varStatus="loop">
 		   			<div style="margin:5px;border:1px solid black;border-radius:10px;">
 		   				<div style="width:100%;height:24px;display:inline-block;border-bottom:1px solid black;">
-		   					<div style="margin-left:5px;color:gray;float:left;"> 昵称${users[loop.count-1].nickName}</div>
-		   					<div style="margin-right:5px;color:gray;float:right;">时间${comment.create_time}</div>
+		   					<div style="margin-left:5px;color:gray;float:left;"> ${users[loop.count-1].nickName}</div>
+		   					<div style="margin-right:5px;color:gray;float:right;">${comment.create_time}</div>
 		   				</div>
-		   			<div style="min-height:40px;text-indent:.5em;">内容${comment.body}</div>		   		
+		   			<div style="min-height:40px;text-indent:.5em;">${comment.body}</div>		   		
 		   		</div>
 		   		</c:forEach>
+		   		</c:if>
 		   	  </div>
 		   		
 		   			<div id="writecomment">
@@ -404,20 +408,23 @@ z-index:999;
 		   					<input type="hidden" value="${onclicknote.id }" name="noteId">
 		   					<input type="hidden" value="${currentUser.id }" name="currentUserId">
 		   					<input type="submit" value="发送">
+		   					<input type="button" value="取消" onclick="reply()">
 		   	
 		   			</form>
 		   			</div>
-		   			
+		   	
 		   </div>
 		</div>
-		  
-        <a id="pinglun" href="#" onclick="reply();">		  
-		  	<div class="talk" style="position:fixed;right:3px;bottom:60px;">
-			    <img style="width:40px;" src="images/pinglun.png"/>
-				<p>评论</p>			
-		    </div>
-		</a>
-		
+	
+			<c:if test="${!empty(onclicknote)}"> 
+        	<a id="pinglun" href="seeCommets?noteid=${onclicknote.id}" >		  
+		  		<div class="talk" style="position:fixed;right:3px;bottom:60px;">
+				    <img style="width:40px;" src="images/pinglun.png"/>
+					<p>评论</p>			
+		   	 </div>
+			</a>
+			</c:if> 
+		 </c:if> 
 	</div>
 </body>
 </html>

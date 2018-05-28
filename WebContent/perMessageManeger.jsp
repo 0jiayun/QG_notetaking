@@ -22,7 +22,7 @@ function back(){
 </head>
 <body>
 <h1>个人信息修改</h1>
-<form action="" name="form" >
+<form action="" name="form" method="post">
   
   <p>昵称：<input type="text" id="nickName" name="nickName"  value="${currentUser.nickName }" /></p>
   <p style="">

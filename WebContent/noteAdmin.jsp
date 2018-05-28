@@ -10,7 +10,8 @@
 <body>
 <h1>笔记管理</h1>
 <a href="getUserNotes?user_id=${currentUser.id}" target="_self" name="option">刷新页面</a>
-<c:if test="${empty(notes)}">暂时没有笔记... </c:if>
+<br>
+<c:if test="${empty(notes)}">暂时没有笔记,快记一篇吧 </c:if>
 <c:if test="${!empty(notes)}">
    <table border="1px">
       <table border="1px">

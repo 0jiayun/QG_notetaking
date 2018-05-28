@@ -252,7 +252,8 @@ public class UserService {
 		}else {
 			sexint=0;
 		}
-		User user=new User(userName,password_1,nickName,sexint);
+		String nickName2=StringUtil.htmlReplace(nickName);
+		User user=new User(userName,password_1,nickName2,sexint);
 		try {
 			if(null!=userDao.findUser(userName)) {
 				req.setAttribute("error1", "用户已已存在");
