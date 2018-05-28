@@ -95,6 +95,7 @@ public class UserService {
 			if(currentUser!=null) { 
 				HttpSession session=req.getSession();
 				session.setAttribute("currentUser",(User)currentUser);
+				session.setAttribute("currentUserId",currentUser.getId());
 				session.setAttribute("noteList", noteList);
 				session.setAttribute("userList", userList);
 				List<Role> roles=userDao.getRoles(currentUser.getId());

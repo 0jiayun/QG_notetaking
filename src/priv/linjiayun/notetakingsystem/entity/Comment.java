@@ -2,6 +2,16 @@ package priv.linjiayun.notetakingsystem.entity;
 
 public class Comment {
 	private int id;
+	private int user_id;
+	private String body;
+	private String create_time;
+	private int note_id;
+	
+	public Comment() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -9,14 +19,13 @@ public class Comment {
 	public void setId(int id) {
 		this.id = id;
 	}
-	private int user_id;
-	private String body;
-	private String creat_time;
-	private int note_id;
-	
-	public Comment() {
+
+	public Comment(int user_id, String body, String create_time, int note_id) {
 		super();
-		// TODO Auto-generated constructor stub
+		this.user_id = user_id;
+		this.body = body;
+		this.create_time = create_time;
+		this.note_id = note_id;
 	}
 
 	public int getUser_id() {
@@ -32,11 +41,11 @@ public class Comment {
 	public void setBody(String body) {
 		this.body = body;
 	}
-	public String getCreat_time() {
-		return creat_time;
+	public String getCreate_time() {
+		return create_time;
 	}
-	public void setCreat_time(String creat_time) {
-		this.creat_time = creat_time;
+	public void setCreate_time(String create_time) {
+		this.create_time = create_time;
 	}
 	public int getNote_id() {
 		return note_id;

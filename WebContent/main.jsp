@@ -10,6 +10,7 @@
 		<title>云笔记</title>
 		<script type="text/javascript">
 		function logout() {
+			
 			var a=document.getElementById("logout");
 			if(confirm("确定退出？")){
 				a.href="loginOut" ;
@@ -19,12 +20,30 @@
 			}
 			
 		}
-		function reply(){
-			var reply = document.getElementById("reply");
-    		if(reply.style.display == 'none')
+		function reply(){			
+			 var reply = document.getElementById("reply");
+    		if(reply.style.display == 'none'){
     			reply.style.display = 'block';
-    		else    reply.style.display = 'none';
+    		}	
+    		else {
+    			reply.style.display = 'none';
+    		} 
         }
+	/* 	window.onload=function(){
+			var reply = document.getElementById("reply");
+			var c=document.getElementById("comment");
+			if(c!=""){
+				reply();
+			}
+				 */
+			
+			
+		
+		/* var c="${comment.body}";
+		var reply = document.getElementById("reply");
+		if(c!=null){
+			reply.style.display = 'block';
+		} */
 		
 		</script>
 <style>
@@ -246,6 +265,21 @@ z-index:999;
 	margin:2px;
 	padding-left:5px;
 }
+#writecomment{
+	width: 95%;
+	height: 55px;
+	 position: absolute;
+          
+            bottom:0px;
+
+}
+#comment_content{
+ width: 100%;
+ height: 155px;
+ overflow: scroll;
+
+
+}
 		</style>
 	</head>
 	<body>
@@ -338,28 +372,52 @@ z-index:999;
 			 
 		</div>
 		<div class="container container_right">
-		 	<div class="biaoti"> ${note_title}</div>
+		 	<div class="biaoti"> 
+		 		
+		 		${onclicknote.title}
+		 		
+		 	
+		 	</div>
+		 	
 		 	<div class="b_neirong">
 		 		<%--  <dir> ${note_body }</dir> --%>
-		    	<textarea rows="5" cols="50"style="width:100%;height:100%;resize:none;"readonly="readonly"> ${note_body }</textarea> 
+		    	<textarea rows="5" cols="50"style="width:100%;height:100%;resize:none;"readonly="readonly"> ${onclicknote.body }</textarea> 
 		   </div>
-		   <div id="reply" style="width:95%;height:33%;background:#eee;overflow:hidden;position:absolute;bottom:0px;display:none;">
-		   		<div style="margin:5px;border:1px solid black;border-radius:10px;">
-		   			<div style="width:100%;height:24px;display:inline-block;border-bottom:1px solid black;">
-		   				<div style="margin-left:5px;color:gray;float:left;">名字</div>
-		   				<div style="margin-right:5px;color:gray;float:right;">日期</div>
-		   			</div>
-		   			<div style="min-height:40px;text-indent:.5em;">......内容</div>
+		   <div id="reply" style="width:95%;height:33%;background:#eee;overflow:scroll;display:inline-block;position:absolute;bottom:0px;display:none;">
+		       <div id="comment_content">
+		       <a href="seeCommets?noteid=${onclicknote.id}" style="color: blue">查看看客评论</a>
+		      
+		       <c:forEach  items="${comments}" var="comment" varStatus="loop">
+		   			<div style="margin:5px;border:1px solid black;border-radius:10px;">
+		   				<div style="width:100%;height:24px;display:inline-block;border-bottom:1px solid black;">
+		   					<div style="margin-left:5px;color:gray;float:left;"> 昵称${users[loop.count-1].nickName}</div>
+		   					<div style="margin-right:5px;color:gray;float:right;">时间${comment.create_time}</div>
+		   				</div>
+		   			<div style="min-height:40px;text-indent:.5em;">内容${comment.body}</div>		   		
 		   		</div>
+		   		</c:forEach>
+		   	  </div>
+		   		
+		   			<div id="writecomment">
+		   				<form action="addComment" method="post">
+		   					<textarea rows="" cols="" name="comment" style="resize:none; width:100%;height:"></textarea>
+		   					<input type="hidden" value="${onclicknote.id }" name="noteId">
+		   					<input type="hidden" value="${currentUser.id }" name="currentUserId">
+		   					<input type="submit" value="发送">
+		   	
+		   			</form>
+		   			</div>
+		   			
 		   </div>
 		</div>
 		  
-        <a id="pinglun" href="<%-- comment?note_id=${note_id} --%>" onclick="reply();">		  
+        <a id="pinglun" href="#" onclick="reply();">		  
 		  	<div class="talk" style="position:fixed;right:3px;bottom:60px;">
 			    <img style="width:40px;" src="images/pinglun.png"/>
-				<p>评论</p>
+				<p>评论</p>			
 		    </div>
 		</a>
+		
 	</div>
 </body>
 </html>

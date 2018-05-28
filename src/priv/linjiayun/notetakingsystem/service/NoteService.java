@@ -276,10 +276,11 @@ public void seeOnclickNote(HttpServletRequest req, HttpServletResponse resp, int
 	try {
 		Note note=noteDao.findNote(note_id);
 		HttpSession session=req.getSession();
-		session.setAttribute("note_title", note.getTitle());
+		session.setAttribute("onclicknote", note);
+		/*session.setAttribute("note_title", note.getTitle());
 		session.setAttribute("note_body", note.getBody());
 		session.setAttribute("user_id", note.getUser_id());
-		session.setAttribute("note_id", note.getId());
+		session.setAttribute("noteid", note.getId());*/
 		req.getRequestDispatcher("main.jsp").forward(req, resp);
 		
 	}catch(Exception e) {

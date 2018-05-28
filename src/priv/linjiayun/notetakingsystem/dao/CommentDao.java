@@ -18,11 +18,11 @@ public class CommentDao {
 		try {
 			jdbcUtil.getConnection();
 			List<Object> params=new ArrayList<Object>();
-			params.add(comment.getNote_id());
 			params.add(comment.getUser_id());
 			params.add(comment.getBody());
-			params.add(comment.getCreat_time());
-            String sql="insert into t_comment value(null,?,?,?,?)";
+			params.add(comment.getCreate_time());
+			params.add(comment.getNote_id());
+            String sql="insert into t_comment value(?,?,?,?,null)";
             return jdbcUtil.updateByPreparedStatement(sql, params);
             
 		}catch(Exception e) {
@@ -34,7 +34,7 @@ public class CommentDao {
 
 	}
 	/**
-	 * 查找笔记
+	 * 删除pinglun
 	 * @param id
 	 * @return
 	 */
@@ -53,7 +53,7 @@ public class CommentDao {
 		}
 	}
 	/**
-	 * 查找评论
+	 * 查找用户评论
 	 * @param user_id
 	 * @param note_id
 	 * @return
@@ -65,14 +65,51 @@ public class CommentDao {
 					List<Object> params=new ArrayList<Object>();
 					params.add(user_id);
 					params.add(note_id);
-					String sql="select * from t_comment where user_id=? and comment_id=?";
+					String sql="select * from t_comment where user_id=? and note_id=?";
 					List<Map<String,Object>> results=jdbcUtil.findResult(sql, params);
 					List<Comment> comments=new ArrayList<Comment>();
 					Comment c=new Comment();
 					for(Map<String,Object>r:results) {
 						c.setId(Integer.parseInt( r.get("id").toString()));
 						c.setBody((String)r.get("body"));
-						c.setCreat_time((String)r.get("creat_time"));
+						c.setCreate_time((String)r.get("creat_time"));
+						c.setNote_id(Integer.parseInt( r.get("note_id").toString()));
+						c.setUser_id(Integer.parseInt( r.get("user_id").toString()));
+						comments.add(c);
+					}
+					return comments;
+						
+					}catch(Exception e) {
+						e.printStackTrace();
+						throw new RuntimeException("查找评论异常");
+					}finally {
+						jdbcUtil.releaseConn();
+					}
+				
+		
+		
+	}
+	/**
+	 * 查找笔记评论
+	 * @param note_id
+	 * @return
+	 */
+	public List<Comment> findCommentBynote_id(int note_id){
+		try {
+			 
+					jdbcUtil.getConnection();
+					List<Object> params=new ArrayList<Object>();
+					
+					params.add(note_id);
+					String sql="select * from t_comment where note_id=?";
+					List<Map<String,Object>> results=jdbcUtil.findResult(sql, params);
+					List<Comment> comments=new ArrayList<Comment>();
+					
+					for(Map<String,Object>r:results) {
+						Comment c=new Comment();
+						c.setId(Integer.parseInt( r.get("id").toString()));
+						c.setBody((String)r.get("body"));
+						c.setCreate_time((String)r.get("creat_time"));
 						c.setNote_id(Integer.parseInt( r.get("note_id").toString()));
 						c.setUser_id(Integer.parseInt( r.get("user_id").toString()));
 						comments.add(c);
