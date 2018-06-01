@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import priv.linjiayun.notetakingsystem.dao.CommentDao;
 import priv.linjiayun.notetakingsystem.dao.NoteDao;
 import priv.linjiayun.notetakingsystem.entity.Note;
 import priv.linjiayun.notetakingsystem.util.StringUtil;
 
 public class NoteService {
 	private NoteDao noteDao=new NoteDao();
+	private CommentDao commentDao=new CommentDao();
 	
     /**
      * 创建笔记
@@ -109,6 +111,7 @@ public class NoteService {
 
 	public void deleteNote(HttpServletRequest req, HttpServletResponse resp, int note_id) {
 		try {
+			commentDao.deleteBynote_id(note_id);
 			if(noteDao.delete(note_id)) {
 				req.setAttribute("error2", "删除成功");
 				req.getRequestDispatcher("noteAdmin.jsp").forward(req, resp);
@@ -154,8 +157,7 @@ public class NoteService {
 	 * @return
 	 */
 	public List<Note> getPublicNotes(){
-		List<Note> notes=noteDao.getAll();
-		
+		List<Note> notes=noteDao.getAll();		
 		Iterator<Note> noteIter=notes.iterator();
 		while(noteIter.hasNext()) {
 			Note note=noteIter.next();

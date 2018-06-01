@@ -34,7 +34,7 @@ public class CommentDao {
 
 	}
 	/**
-	 * 删除pinglun
+	 * 删除评论
 	 * @param id
 	 * @return
 	 */
@@ -124,6 +124,48 @@ public class CommentDao {
 					}
 				
 		
+		
+	}
+	/**
+	 * 删除用户评论
+	 * @param user_id
+	 * @return
+	 */
+	public boolean deleteByuser_id(int user_id) {
+		try {
+			jdbcUtil.getConnection();
+			List<Object> params=new ArrayList<Object>();
+			params.add(user_id);
+			String sql="delete from t_comment where user_id=?";
+			return jdbcUtil.updateByPreparedStatement(sql, params);
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("删除用户评论异常");
+		}finally {
+			jdbcUtil.releaseConn();
+		}
+		
+		
+		
+	}
+	/**
+	 * 删除笔记评论
+	 * @param note_id
+	 * @return
+	 */
+	public boolean deleteBynote_id(int note_id) {
+		try {
+			jdbcUtil.getConnection();
+			List<Object> params=new ArrayList<Object>();
+			params.add(note_id);
+			String sql="delete from t_comment where note_id=?";
+			return jdbcUtil.updateByPreparedStatement(sql, params);
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("删除笔记评论异常");
+		}finally {
+			jdbcUtil.releaseConn();
+		}
 		
 	}
 

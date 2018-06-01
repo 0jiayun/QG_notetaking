@@ -37,7 +37,7 @@ public class NoteDao {
 		}
 	}
 	/**
-	 * 模糊查找异常
+	 * 模糊查找
 	 * @param note_name
 	 * @return
 	 */
@@ -130,6 +130,43 @@ public class NoteDao {
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("查找笔记异常Byuser_id");
+		}finally {
+			jdbcUtil.releaseConn();
+		}
+	}
+	/**
+	 * 获取用户所有笔记
+	 * @param user_id
+	 * @return
+	 */
+	public List<Note> getAlluserNoteByuser_id(int user_id){
+		try {
+			 
+					jdbcUtil.getConnection();
+					List<Object> params=new ArrayList<Object>();
+					List<Note> notes=new ArrayList<Note>();
+					
+					
+					params.add(user_id);
+					String sql="select * from t_note where user_id=?";
+					List<Map<String, Object>> result=jdbcUtil.findResult(sql, params);
+					for(Map<String,Object>m:result) {
+						Note note=new Note();
+						note.setId(Integer.parseInt(m.get("id").toString()));
+						 note.setPurview(Integer.parseInt(m.get("purview").toString()));
+						 note.setUser_id(Integer.parseInt(m.get("user_id").toString()));
+						 note.setTitle((String)m.get("title"));
+						 note.setBody((String)m.get("body"));
+						 note.setCreate_time((String)m.get("create_time"));
+						 note.setLast_modify_time((String)m.get("last_modify_time"));
+						 notes.add(note);
+						
+					}
+					return notes;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("获取用户所有笔记异常");
 		}finally {
 			jdbcUtil.releaseConn();
 		}

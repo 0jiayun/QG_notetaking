@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import priv.linjiayun.notetakingsystem.dao.CommentDao;
 import priv.linjiayun.notetakingsystem.dao.NoteDao;
 import priv.linjiayun.notetakingsystem.dao.RoleDao;
 import priv.linjiayun.notetakingsystem.dao.UserDao;
@@ -25,6 +26,7 @@ public class UserService {
 	private UserDao userDao=new UserDao();
 	private RoleDao roleDao=new RoleDao();
 	private NoteDao noteDao=new NoteDao();
+	private CommentDao commentDao=new CommentDao();
 	
 	private NoteService noteService=new NoteService();
 	
@@ -563,16 +565,13 @@ public class UserService {
 	 */
 	public void userDelete(HttpServletRequest req, HttpServletResponse resp, int user_id) {
 		try {
-			if(noteDao.findNoteByuser_id(user_id).getTitle()!=null) {
-				if(noteDao.deleteByuser_id(user_id)&&userDao.deleteUserByid(user_id)) {
-					req.setAttribute("error2", "删除成功");
-					req.getRequestDispatcher("userChange.jsp").forward(req, resp);
-				}else {
-					req.setAttribute("error1", "删除失败");
-					req.getRequestDispatcher("userChange.jsp").forward(req, resp);
-				}
-					
-			}else {
+			List<Note> notes=noteDao.getAlluserNoteByuser_id(user_id);
+			for(Note n:notes) {
+				commentDao.deleteBynote_id(n.getId());
+			}
+			
+			commentDao.deleteByuser_id(user_id);		    
+			noteDao.deleteByuser_id(user_id);			
 				if(userDao.deleteUserByid(user_id)) {
 					req.setAttribute("error2", "删除成功");
 					req.getRequestDispatcher("userChange.jsp").forward(req, resp);
@@ -580,9 +579,6 @@ public class UserService {
 					req.setAttribute("error1", "删除失败");
 					req.getRequestDispatcher("userChange.jsp").forward(req, resp);
 				}
-			}
-		
-				
 			}catch(Exception e){
 				e.printStackTrace();
 				throw new RuntimeException("userdelete异常");
